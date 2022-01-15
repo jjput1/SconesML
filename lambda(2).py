@@ -1,7 +1,7 @@
 import json
 
 # The Thresshhh
-THRESHOLD = 0.71
+THRESHOLD = 0.95
 
 
 def lambda_handler(event, context):
@@ -10,18 +10,39 @@ def lambda_handler(event, context):
     # Inference Grabber
     inferSTR = event["body"]["inferences"]
 
+    # Inference Splitter
     infersplit = inferSTR.split()
 
-    inferHigh = infersplit[1]
+    infer1 = infersplit[0]
+    infer2 = infersplit[1]
 
-    badchars = ",]"
+    #individual replace statements is easier on step functions interpreter
+    infer1 = infer1.replace(',', "")
+    infer1 = infer1.replace('[', "")
+    infer2 = infer2.replace(']', "")
 
-    for character in badchars:
+    # Defined the badchars and removed them since its a string
+    #badchars = "[]"
 
-        inferenceGood = inferHigh.replace(character, "")
+    #for character in badchars:
 
-    inferFloat= float(inferenceGood)
+    #    inferenceGood1 = infer1.replace(character, "")
+    #    inferenceGood2 = infer2.replace(character, "")
 
+
+
+
+
+    #Now that its formated as a number it can become a float
+    inferFloat1= float(infer1)
+    inferFloat2= float(infer2)
+
+    #The largest becomes final inferFloat unless 50/50 then 1 becomes final
+    if inferFloat1 >= inferFloat2:
+        inferFloat = inferFloat1
+
+    elif inferFloat1 < inferFloat2:
+        inferFloat = inferFloat2
 
     #Check vals
     meets_threshold = (inferFloat >= THRESHOLD)

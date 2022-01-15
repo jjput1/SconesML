@@ -6,7 +6,7 @@ import boto3
 
 runtime= boto3.client('runtime.sagemaker')
 
-ENDPOINT = "image-classification-2021-12-31-01-07-40-921"
+ENDPOINT = "image-classification-2022-01-15-19-38-41-511"
 
 
 def lambda_handler(event, context):
